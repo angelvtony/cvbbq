@@ -53,6 +53,13 @@ class HomeFragment : Fragment() {
             startActivityForResult(Intent.createChooser(intent, "Select CV"), PICK_FILE_REQUEST)
         }
 
+        binding.removeFileButton.setOnClickListener {
+            cvUri = null
+            binding.uploadCvButton.visibility = View.VISIBLE
+            binding.fileCard.visibility = View.GONE
+            binding.cvPathText.text = "No file selected"
+        }
+
         binding.roastButton.setOnClickListener {
             if (cvUri == null) {
                 binding.cvPathText.text = "Please upload a CV first!"
@@ -69,14 +76,6 @@ class HomeFragment : Fragment() {
                 .replace(R.id.fragmentContainer, RoastFragment())
                 .addToBackStack(null)
                 .commit()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_FILE_REQUEST && resultCode == Activity.RESULT_OK) {
-            cvUri = data?.data
-            binding.cvPathText.text = cvUri?.lastPathSegment ?: "File selected"
         }
     }
 
