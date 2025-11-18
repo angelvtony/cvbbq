@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/homeFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/uploadCvButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload CV" />
+
+    <TextView
+        android:id="@+id/cvPathText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No file selected"
+        android:paddingTop="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select language"
+        android:paddingTop="16dp"/>
+    <Spinner
+        android:id="@+id/languageSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Roast intensity"
+        android:paddingTop="16dp"/>
+    <Spinner
+        android:id="@+id/intensitySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/roastButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Roast Me!"
+        android:layout_marginTop="24dp"/>
+</LinearLayout>
