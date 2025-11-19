@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bg_dark">#181828</color>
+    <color name="bg_card">#252540</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_gray">#8E8E93</color>
+    <color name="accent_purple">#8A56AC</color>
+    <color name="accent_green">#2ECC71</color>
+    <color name="progress_track">#3A3A55</color>
 </resources>
