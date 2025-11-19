@@ -40,7 +40,7 @@ class RoastFragment : Fragment() {
 
         viewModel.hrTrauma.observe(viewLifecycleOwner) { binding.hrTraumaBar.progress = it }
         viewModel.grammarDisaster.observe(viewLifecycleOwner) { binding.grammarBar.progress = it }
-        viewModel.overconfidence.observe(viewLifecycleOwner) { binding.overconfidenceBar.progress = it }
+//        viewModel.overconfidence.observe(viewLifecycleOwner) { binding.overconfidenceBar.progress = it }
         viewModel.memePotential.observe(viewLifecycleOwner) { binding.memePotentialBar.progress = it }
         viewModel.gifUrl.observe(viewLifecycleOwner) { url ->
             Glide.with(this)

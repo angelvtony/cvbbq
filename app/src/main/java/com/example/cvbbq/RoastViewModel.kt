@@ -1,9 +1,6 @@
 package com.example.cvbbq
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
@@ -17,93 +14,99 @@ class RoastViewModel : ViewModel() {
     private val _sectionRoasts = MutableLiveData<List<String>>()
     val sectionRoasts: LiveData<List<String>> get() = _sectionRoasts
 
-    private val _hrTrauma = MutableLiveData<Int>()
-    val hrTrauma: LiveData<Int> get() = _hrTrauma
+    val hrTrauma = MutableLiveData<Int>()
+    val grammarDisaster = MutableLiveData<Int>()
+    val memePotential = MutableLiveData<Int>()
+    val gifUrl = MutableLiveData<String>()
 
-    private val _grammarDisaster = MutableLiveData<Int>()
-    val grammarDisaster: LiveData<Int> get() = _grammarDisaster
-
-    private val _overconfidence = MutableLiveData<Int>()
-    val overconfidence: LiveData<Int> get() = _overconfidence
-
-    private val _memePotential = MutableLiveData<Int>()
-    val memePotential: LiveData<Int> get() = _memePotential
-
-    private val _gifUrl = MutableLiveData<String>()
-    val gifUrl: LiveData<String> get() = _gifUrl
-
-    private val _intensity = MutableLiveData<String>()
-    val intensity: LiveData<String> get() = _intensity
-
-    private val _language = MutableLiveData<String>()
-    val language: LiveData<String> get() = _language
-
-    private val API_KEY = BuildConfig.GEMINI_API_KEY
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
     fun roastCV(cvText: String, language: String, intensity: String) {
-        _language.value = language
-        _intensity.value = intensity
+        _isLoading.postValue(true)
+
+        val apiKey = BuildConfig.GEMINI_API_KEY
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val prompt = """
-                    You are a CV roasting assistant.
-                    Roast the following CV section-wise.
-
+                    You are a brutal but funny HR roasting this CV.
                     Language: $language
                     Intensity: $intensity
-
-                    Respond in JSON:
+                    
+                    Output valid JSON ONLY:
                     {
-                        "sections": [
-                            {"title": "Section 1", "roast": "..."},
-                            {"title": "Section 2", "roast": "..."}
-                        ],
-                        "overall": "Full combined roast"
+                      "sections": [
+                        {"title": "Experience", "roast": "short roast"},
+                        {"title": "Skills", "roast": "short roast"}
+                      ],
+                      "overall": "summary roast"
                     }
 
                     CV Text:
                     $cvText
                 """.trimIndent()
 
-                val request = GeminiRequest(prompt = prompt, max_tokens = 2000)
-                val response = GeminiClient.api.generateRoast(request, "Bearer $API_KEY")
+                val request = GeminiRequest(
+                    contents = listOf(
+                        GeminiContent(
+                            parts = listOf(GeminiPart(prompt))
+                        )
+                    )
+                )
 
-                val jsonText = response.choices.firstOrNull()?.text ?: "{}"
-                val jsonObject = JSONObject(jsonText)
+                val response = GeminiClient.api.generateRoast(apiKey, request)
 
-                // Parse sections
-                val sectionsArray = jsonObject.optJSONArray("sections") ?: JSONArray()
-                val roastedSections = mutableListOf<String>()
+                val aiText = response
+                    .candidates
+                    ?.firstOrNull()
+                    ?.content
+                    ?.parts
+                    ?.firstOrNull()
+                    ?.text
 
-                for (i in 0 until sectionsArray.length()) {
-                    val sectionObj = sectionsArray.getJSONObject(i)
-                    roastedSections.add("🔥 ${sectionObj.getString("title")}\n${sectionObj.getString("roast")}")
-                }
+                if (aiText != null)
+                    parseRoastJson(aiText)
+                else
+                    _roastText.postValue("No response from Gemini.")
 
-                _sectionRoasts.postValue(roastedSections)
-                _roastText.postValue(jsonObject.optString("overall", "AI roast unavailable"))
-
-                // Example metrics (can be AI-generated too)
-                val boost = roastedSections.size * 5
-                val hr = when (intensity) {
-                    "Mild" -> 20 + boost
-                    "Medium" -> 50 + boost
-                    "Nuclear" -> 90 + boost
-                    else -> 40
-                }.coerceAtMost(100)
-
-                _hrTrauma.postValue(hr)
-                _grammarDisaster.postValue((20..95).random())
-                _overconfidence.postValue((10..90).random())
-                _memePotential.postValue((30..100).random())
-
-                _gifUrl.postValue("https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif")
+                generateMetrics(intensity)
 
             } catch (e: Exception) {
-                e.printStackTrace()
-                _roastText.postValue("Failed to generate roast: ${e.message}")
+                _roastText.postValue("Error: ${e.localizedMessage}")
+            } finally {
+                _isLoading.postValue(false)
             }
         }
+    }
+
+    private fun parseRoastJson(raw: String) {
+        val clean = raw.replace("```json", "").replace("```", "").trim()
+
+        try {
+            val obj = JSONObject(clean)
+            val sections = obj.optJSONArray("sections") ?: JSONArray()
+            val list = mutableListOf<String>()
+
+            for (i in 0 until sections.length()) {
+                val item = sections.getJSONObject(i)
+                list.add("🔥 ${item.getString("title")}\n${item.getString("roast")}")
+            }
+
+            _sectionRoasts.postValue(list)
+            _roastText.postValue(obj.optString("overall", "Roast complete."))
+
+        } catch (e: Exception) {
+            _roastText.postValue("JSON Parse Error: $clean")
+        }
+    }
+
+    private fun generateMetrics(intensity: String) {
+        val base = if (intensity == "Nuclear") 60 else 20
+
+        hrTrauma.postValue((base..100).random())
+        grammarDisaster.postValue((10..90).random())
+        memePotential.postValue((20..100).random())
+        gifUrl.postValue("https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif")
     }
 }

@@ -19,6 +19,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        // --- API KEY SETUP ---
         val localProperties = Properties()
         val localPropertiesFile = rootProject.file("local.properties")
         if (localPropertiesFile.exists()) {
@@ -26,9 +27,12 @@ android {
                 localProperties.load(stream)
             }
         }
+        // Reads the key you put in local.properties
         val geminiApiKey: String = localProperties.getProperty("GEMINI_API_KEY") ?: ""
 
+        // Makes it available in your Kotlin code as BuildConfig.GEMINI_API_KEY
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -63,20 +67,37 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
-    implementation("androidx.fragment:fragment-ktx:1.8.9")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
     implementation(libs.androidx.constraintlayout)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
-    implementation("com.github.bumptech.glide:glide:5.0.5")
-    kapt("com.github.bumptech.glide:compiler:5.0.5")
-    implementation("com.airbnb.android:lottie:6.7.1")
+
+    // Lifecycle components
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+
+    // Image Loading
+    implementation("com.github.bumptech.glide:glide:4.16.0") // 5.x is alpha, 4.16 is stable
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Animation
+    implementation("com.airbnb.android:lottie:6.6.0")
+
+    // --- GEMINI AI SDK (ADD THIS) ---
+    // Use version 0.9.0 or higher to support Gemini 1.5 models
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+
+    // Networking (Retrofit - Keep only if you have other APIs, not needed for the SDK above)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // PDF
+    implementation("com.itextpdf:itext7-core:7.2.5")
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-
 }
 
 kapt {
