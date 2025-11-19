@@ -29,12 +29,6 @@ class RoastFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.roastCV(
-            cvText = "Dummy CV text",
-            language = "Malayalam",
-            intensity = "Mild"
-        )
-
         viewModel.roastText.observe(viewLifecycleOwner) { roast ->
             binding.roastText.text = roast
         }
@@ -43,7 +37,6 @@ class RoastFragment : Fragment() {
             val finalText = list.joinToString("\n\n=================\n\n")
             binding.roastText.text = finalText
         }
-
 
         viewModel.hrTrauma.observe(viewLifecycleOwner) { binding.hrTraumaBar.progress = it }
         viewModel.grammarDisaster.observe(viewLifecycleOwner) { binding.grammarBar.progress = it }

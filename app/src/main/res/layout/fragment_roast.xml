@@ -2,91 +2,123 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#181828">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="24dp">
 
-        <!-- Roast Text with flames -->
+        <TextView
+            android:id="@+id/roastTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔥 Your Roast"
+            android:layout_marginTop="34dp"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
         <TextView
             android:id="@+id/roastText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="Your roast will appear here..."
-            android:textColor="#FF5722"
-            android:textSize="20sp" />
+            android:textColor="#FF7B53"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp" />
 
-        <!-- Funny Metrics -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="HR Trauma Level 😵" />
+                android:text="HR Trauma Level 😵"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
 
             <ProgressBar
                 android:id="@+id/hrTraumaBar"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:progress="5"
+                android:progressTint="#EF5350"
+                android:layout_marginBottom="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Grammar Disaster ⚠️" />
+                android:text="Grammar Disaster ⚠️"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
 
             <ProgressBar
                 android:id="@+id/grammarBar"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:progress="5"
+                android:progressTint="#FFA726"
+                android:layout_marginBottom="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Overconfidence Meter 💪" />
+                android:text="Overconfidence Meter 💪"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
 
             <ProgressBar
                 android:id="@+id/overconfidenceBar"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:progress="5"
+                android:layout_height="wrap_content"
+                android:progressTint="#42A5F5"
+                android:layout_marginBottom="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Meme Potential 😂" />
+                android:text="Meme Potential 😂"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
 
             <ProgressBar
                 android:id="@+id/memePotentialBar"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:progress="5"
+                android:progressTint="#AB47BC" />
         </LinearLayout>
 
-        <!-- AI-suggested GIF -->
         <ImageView
             android:id="@+id/roastGif"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="16dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_launcher_background" />
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="24dp"
+            android:padding="8dp" />
 
-        <!-- Share Button -->
         <Button
             android:id="@+id/shareButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="📤 Share Roast" />
+            android:text="📤 Share Roast"
+            android:textColor="#181828"
+            android:textStyle="bold"
+            android:backgroundTint="#2ECC71"
+            android:padding="12dp" />
     </LinearLayout>
+
 </ScrollView>
