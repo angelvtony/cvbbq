@@ -74,15 +74,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // PDF support
-    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
-
-    // DOCX support
-    implementation("org.apache.poi:poi-ooxml:5.5.0")
 }
 
 kapt {
